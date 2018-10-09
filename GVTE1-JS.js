@@ -18,7 +18,11 @@ document.addEventListener('DOMContentLoaded', function () {
     resetBtn = document.getElementById('resetBtn');
     elem = document.getElementById("anim");
     divRuns = document.getElementById("isRunning");
-
+    startBtn.addEventListener('click', function () {
+        divRuns.setAttribute("data-step", "false");
+        spriteanimation.init();
+    });
+    
     resetBtn.addEventListener('click', function () {
         spriteanimation.stopAnimation();
         startTime = undefined;
