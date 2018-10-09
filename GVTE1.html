@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="GVT_styles.css" media="screen" />
+    <script src="GVTE1-JS.js" type="application/javascript"></script>
+    <title>Aufgabe1-Selzer</title>
+</head>
+<body id="body" class="body" onload="slider.init(1)">
+    <header>
+        <h2>Abgabe der Aufgabe 1 : EA 1 - Interaktiv animierte Scheibe</h2>
+    </header>
+    <content>
+        <ul class="info-text" >
+            <li>
+                <p> Hier sehen Sie eine Scheibe. Das tolle an der Scheibe ist, Sie können Sie zum drehen kriegen. Wie? Ganz einfach: Wenn sie die Taste <span style="font-weight:bold;">"L"</span> drücken,
+                    dreht sich die Kiwi-Scheibe nach links und bei<span style="font-weight:bold;"> "R" </span> nach rechts.</p>
+                <p> Alternativ können Sie auch die 2 Buttons neben dem Bild benutzen, falls die Maus Ihnen lieber ist.</p>
+                <p> (Ich bitte die Optik der Webseite nicht zu zusehr zu beachten. Ich habe für den Kurs einen QNAP gekauft und bei mir zuhause aufgestellt und es jetzt erst hinbekommen überhaupt von außen drauf zukommen.
+                    Ich habe kein schönes CMS drauf und auch nicht viel Zeit in die Webseite an sich investieren können. Werde mich jetzt auch erstmal noch darum kümmern müssen, den Webserver richtig ab zusichern.)</p>
+            </li>
+            <li>
+                <Div id="container" style="display:inline;">
+                    <a href="#" id="links" class="arrow-basic" onclick="slider.stepLeft()">vor</a>
+                    <img id="imagesgohere" style="width:750px;">
+                    <a href="#" id="rechts" class="arrow-basic" onclick="slider.stepRight()">zurück</a>
+                </Div>
+            </li>
+
+            <li>
+                <h3>Zusatzaufgaben:</h3>
+                <p>Mit drücken der Taste <span style="font-weight:bold;"> a </span> starten sie die kontinuierliche Animation eines Sprite, ebenso mit der Taste <span style="font-weight:bold;"> "Loop"</span> .</p>
+                <p>Mit der Taste <span style="font-weight:bold;"> "Stop"</span> halten Sie die Animation an.</p>
+                <p>Mit der Taste <span style="font-weight:bold;"> "Next Step"</span> erhalten sie die Spriteanimation schrittweise. Jeder Klick geht ein "Frame" weiter im Sprite.
+                <div id="isRunning" style="visibility: hidden;" data-step="false">animdiv</div>
+                <button type="button" id="loopBtn" onclick="spriteanimation.init()">Loop</button>
+                <button type="button" id="resetBtn">Stop</button>
+                <button type="button" id="stepBtn">Next Step</button>
+            <canvas id="spriteanimtaion" width="1220" height="113"></canvas>
+            </li>
+            <li>
+                <p> Sabine Selzer, Oktiber, 2018</p>
+            </li>
+        </ul>
+    </content>
+    <footer> Bei Fragen eine Mail an: <a href="mailto:bine.eichstaedt@gmx.net?Subject=Fragen%20Abgabe" target="_top">bine.eichstaedt@gmx.net</a> </footer>
+<script>
+
+
+</script>
+</body>
+</html>
