@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas id="canvas" width="600" height="600"></canvas>
+
+    <script>
+        // Get the WebGL context
+        var canvas = document.getElementById('canvas');
+        var gl = canvas.getContext('experimental-webgl');
+
+        // Pipeline setup
+        gl.clearColor(1, 1, 1, 1);
+
+        // Compile a vertex shader, vex 4 (x,y,z,w) w kann 1 bleiben
+        var vsSource = 'attribute vec2 pos;' +
+            'void main(){gl_Position = vec4(pos*0.05, 0, 1); gl_PointSize = 5.0; }';
+        var vs = gl.createShader(gl.VERTEX_SHADER);
+        gl.shaderSource(vs, vsSource);
+        gl.compileShader(vs);
+
+        // Compile a fragment shader
+        fsSouce = 'void main() { gl_FragColor = vec4(0,0,0,1); }';
+        var fs = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fs, fsSouce);
+        gl.compileShader(fs);
+
+        // Link together into a program
+        var prog = gl.createProgram();
+        gl.attachShader(prog, vs);
+        gl.attachShader(prog, fs);
+        gl.linkProgram(prog);
+        gl.useProgram(prog);
+
+        // Load vertex data into a buffer
+        var foxVertices = new Float32Array([
+            4, 4,
+            0, 9,
+            1, 2,
+            4, 4,
+            0, 0,
+            4, 1.5,
+            4, 4,
+            11, 4,
+            15, 9,
+            14, 2,
+            11, 4,
+            13, 2,
+            14, 2,
+            13, 2,
+            15, 0,
+            11, 1.5,
+            11, 4,
+            10, 0,
+            11, 1.5,
+            10, 0,
+            11.5, 0,
+            13, 0.75,
+            15, 0,
+            11.5, -2,
+            11.5, 0,
+            10, 0,
+            11.5, -2,
+            7.5, -9,
+            8, -10,
+            15, 0,
+            8, -10,
+            7, -10,
+            0, 0,
+            3.5, -2,
+            5, 0,
+            7.5, -9,
+            7, -10,
+            7.5, -9,
+            3.5, -2,
+            3.5, 0,
+            2, 0.75,
+            4, 1.5,
+            5, 0,
+            3.5, 0,
+            5, 0,
+            4, 4,
+            4, 1.5,
+            0, 0,
+            4, 4,
+            0, 9,
+            1, 2,
+            2, 2,
+            1, 2,
+            4, 4,
+            11, 4, 7.5, -9
+        ]);
+        var sizeArray = foxVertices.length / 2;
+
+        var vbo = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vbo);
+        gl.bufferData(gl.ARRAY_BUFFER, foxVertices, gl.STATIC_DRAW);
+
+        // Bind vertex buffer to attribute variable
+        var posAttrib = gl.getAttribLocation(prog, 'pos');
+        gl.vertexAttribPointer(posAttrib, 2, gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(posAttrib);
+
+        // Clear framebuffer and render primitives
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.drawArrays(gl.LINE_STRIP, 0, sizeArray);
+    </script>
+</body>
+</html>
