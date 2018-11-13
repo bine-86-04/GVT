@@ -15,7 +15,7 @@
 <select id="select-object" onclick="javascript:maleCanvas();">
     <option value="1" >Seltsame Blume</option>
     <option value="2" >Wirbel</option>
-    <option value="3" >Glocke</option>
+    <option value="3" >Glocken Hut</option>
     <option value="4" >Sanduhr</option>
 </select>
 </li>
@@ -77,6 +77,10 @@
                 var iVertex = i * (m + 1) + j;
                 var a = 2;
                 var b = 0.9;
+                if(j > 6){
+                    v = u;
+                }
+
                 var x = v*Math.cos(u);
                 var z = v*Math.sin(u);
                 var sumQuadrat = Math.pow(u,2) + Math.pow(v, 2);
