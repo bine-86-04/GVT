@@ -1,0 +1,429 @@
+<!DOCTYPE html5>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Aufgabe4-Selzer</title>
+</head>
+<body>
+<header>
+    <h2>Abgabe der Aufgabe 4 : EA 4 - Farbige parametrisierte Flächen</h2>
+</header>
+<canvas id="canvas" width="500" height="500"></canvas>
+<ul style="list-style: none;">
+<li>
+    <span>Objektauswahl:</span>
+<select id="select-object" onclick="javascript:maleCanvas();">
+    <option value="1" >Seltsame Blume</option>
+    <option value="2" >Wirbel</option>
+    <option value="3" >Glocke</option>
+    <option value="4" >Sanduhr</option>
+</select>
+</li>
+<li>
+    <span>Linenfarbe:</span>
+<select id="select-line-color" onclick="javascript:maleCanvas();">
+    <option value="1" >Schwarz</option>
+    <option value="2" >Blau</option>
+    <option value="3" >Rot</option>
+</select>
+</li>
+<li>
+    <span>Formfarbe:</span>
+<select id="select-fill-color" onclick="javascript:maleCanvas();">
+    <option value="1" >White</option>
+    <option value="2" >Orange</option>
+    <option value="3" >Schwarz</option>
+    <option value="4" >Violett</option>
+</select>
+</li>
+</ul>
+<script>
+    // Vertex data.
+    // Positions, Index data.
+    var vertices, indicesLines, indicesTris;
+
+    function chooseObject(){
+        var e = document.getElementById("select-object");
+        var strObject = e.options[e.selectedIndex].value;
+
+        if(strObject == 1){
+            createVertexDataCuriosFlower();
+        }else if(strObject == 2){
+            createVertexDataBand();
+        }else if(strObject == 3){
+            createVertexData();
+        }else if(strObject == 4){
+            createVertexDataHelix();
+        }
+    }
+    function createVertexData() {
+        var n = 64;
+        var m = 12;
+        // Positions.
+        vertices = new Float32Array(3 * (n + 1) * (m + 1));
+        // Index data.
+        indicesLines = new Uint16Array(2 * 2 * n * m);
+        indicesTris = new Uint16Array(3 * 2 * n * m);
+
+        var du = 2*Math.PI/n;
+        var dv = 1/m;
+        // Counter for entries in index array.
+        var iLines = 0;
+        var iTris = 0;
+        // Loop angle u. == t
+        for (var i = 0, u = Math.PI; i <= n; i++, u += du) {
+            // Loop height v. == r
+            for (var j = 0, v = 0; j <= m; j++, v += dv) {
+                var iVertex = i * (m + 1) + j;
+                var a = 2;
+                var b = 0.9;
+                var x = v*Math.cos(u);
+                var z = v*Math.sin(u);
+                var sumQuadrat = Math.pow(u,2) + Math.pow(v, 2);
+                var r = Math.sqrt(sumQuadrat);
+                var AR = a*v;
+
+                //b* Math.exp( (Math.pow(AR , 2))*(-1));//
+                var y =  Math.cos(v*Math.PI);//-v+0.5;
+                // Set vertex positions.
+                vertices[iVertex * 3] = x;
+                vertices[iVertex * 3 + 1] = y;
+                vertices[iVertex * 3 + 2] = z;
+                // Set index.
+                // Line on beam.
+                if (j > 0 && i > 0) {
+                    indicesLines[iLines++] = iVertex - 1;
+                    indicesLines[iLines++] = iVertex;
+                }
+                // Line on ring.
+                if (j > 0 && i > 0) {
+                    indicesLines[iLines++] = iVertex - (m + 1);
+                    indicesLines[iLines++] = iVertex;
+                }
+                // Set index.
+                // Two Triangles.
+                if (j > 0 && i > 0) {
+                    indicesTris[iTris++] = iVertex;
+                    indicesTris[iTris++] = iVertex - 1;
+                    indicesTris[iTris++] = iVertex - (m + 1);
+                    //
+                    indicesTris[iTris++] = iVertex - 1;
+                    indicesTris[iTris++] = iVertex - (m + 1) - 1;
+                    indicesTris[iTris++] = iVertex - (m + 1);
+                }
+            }
+        }
+    }
+    function createVertexDataHelix(){
+        var m = 4;
+        var n = 2 * m;
+        // Positions.
+        vertices = new Float32Array(3 * (n + 1) * (m + 1));
+        // Index data for Linestip.
+        indicesLines = new Uint16Array(2 * 2 * n * m);
+        indicesTris = new Uint16Array(3 * 2 * n * m);
+        var tn = 3 * 2 * Math.PI;
+        var dt = 2*Math.PI / m;
+        var dv = 1/m;
+        var t = 0;
+        var r = 0.6;
+        var iLines = 0;
+        var iTris = 0;
+
+        for(var i = 0; i <= n; i++, t += dt) {
+            for (var j = 0, v = 0; j <= m; j++, v += r) {
+                r = 1.0 - dv*i ;//i / n;
+                //r = 1.0 - t / (2*Math.PI);
+                var iVertex = i * (m + 1) + j;
+                var x = r * Math.cos(v);
+                var z = r * Math.sin(v);
+                var y = 0.5 - t / tn;
+                // Set vertex positions.
+                vertices[iVertex * 3] = x;
+                vertices[iVertex * 3 + 1] = y;
+                vertices[iVertex * 3 + 2] = z;
+                // Set index.
+                // Line on beam.
+                if (j > 0 && i > 0) {
+                    indicesLines[iLines++] = iVertex - 1;
+                    indicesLines[iLines++] = iVertex;
+                    // Line on ring.
+                    if (j > 0 && i > 0) {
+                        indicesLines[iLines++] = iVertex - (m + 1);
+                        indicesLines[iLines++] = iVertex;
+                    }
+                }
+
+                // Set index.
+                // Two Triangles.
+                if (j > 0 && i > 0) {
+                    indicesTris[iTris++] = iVertex;
+                    indicesTris[iTris++] = iVertex - 1;
+                    indicesTris[iTris++] = iVertex - (m + 1);
+                    //
+                    indicesTris[iTris++] = iVertex - 1;
+                    indicesTris[iTris++] = iVertex - (m + 1) - 1;
+                    indicesTris[iTris++] = iVertex - (m + 1);
+                }
+            }
+        }
+    }
+    function createVertexDataCuriosFlower(){
+        var m = 8;
+        var n = 16;
+        // Positions.
+        vertices = new Float32Array(3 * (n + 1) * (m + 1));
+        // Index data for Linestip.
+        indicesLines = new Uint16Array(2 * 2 * n * m);
+        indicesTris = new Uint16Array(3 * 2 * n * m);
+        var tn = 3 * 2 * Math.PI;
+        var dt = 2*Math.PI / m;
+        var dv = 1/m;
+        var t = 0;
+        var r = 0.6;
+        var iLines = 0;
+        var iTris = 0;
+
+        for(var i = 0; i <= n; i++, t += dt) {
+            for (var j = 0, v = 0; j <= m; j++, v += r) {
+                r = 1.0 - dv*i ;//i / n;
+                //r = 1.0 - t / (2*Math.PI);
+                var iVertex = i * (m + 1) + j;
+                var x = r * Math.cos(v);
+                var y = r * Math.sin(v);
+                var z = 0.5 - t / tn;
+                // Set vertex positions.
+                vertices[iVertex * 3] = x;
+                vertices[iVertex * 3 + 1] = y;
+                vertices[iVertex * 3 + 2] = z;
+                // Set index.
+                // Line on beam.
+                if (j > 0 && i > 0) {
+                    indicesLines[iLines++] = iVertex - 1;
+                    indicesLines[iLines++] = iVertex;
+                    // Line on ring.
+                    if (j > 0 && i > 0) {
+                        indicesLines[iLines++] = iVertex - (m + 1);
+                        indicesLines[iLines++] = iVertex;
+                    }
+                }
+
+                // Set index.
+                // Two Triangles.
+                if (j > 0 && i > 0) {
+                    indicesTris[iTris++] = iVertex;
+                    indicesTris[iTris++] = iVertex - 1;
+                    indicesTris[iTris++] = iVertex - (m + 1);
+                    //
+                    indicesTris[iTris++] = iVertex - 1;
+                    indicesTris[iTris++] = iVertex - (m + 1) - 1;
+                    indicesTris[iTris++] = iVertex - (m + 1);
+                }
+            }
+        }
+    }
+    function createVertexDataBand(){
+        var m = 5;
+        var n = 3*m;
+        // Positions.
+        vertices = new Float32Array(3 * (n + 1) * (m + 1));
+        // Index data for Linestip.
+        indicesLines = new Uint16Array(2 * 2 * n * m);
+        indicesTris = new Uint16Array(3 * 2 * n * m);
+        var tn = 3 * 2 * Math.PI;
+        var dt = 2 * Math.PI / m;
+        var dv = 1/m;
+        //var t = 0;
+        var r = 0.8;
+        var iLines = 0;
+        var iTris = 0;
+
+        for(var i = 0, t= 0; i <= n; i++, t += dt) {
+            for (var j = 0, v = 0; j <= m; j++, v += r) {
+                r = 1.0 - i / n;
+                //r = 1.0 - t / (2*Math.PI);
+                var iVertex = i * (m + 1) + j;
+                var x = r * Math.cos(v);
+                var z = r * Math.sin(v);
+                var y = 1.0- t / tn;
+                console.log(y);
+                if(y == 0){
+                    x=0;
+                    y=0;
+                    z=0;
+                }
+                // Set vertex positions.
+                vertices[iVertex * 3] = x;
+                vertices[iVertex * 3 + 1] = y;
+                vertices[iVertex * 3 + 2] = z;
+
+                // Set index.
+                // Line on beam.
+                if (j > 0 && i > 0) {
+                    indicesLines[iLines++] = iVertex - 1;
+                    indicesLines[iLines++] = iVertex;
+                    // Line on ring.
+                    if (j > 0 && i > 0) {
+                        indicesLines[iLines++] = iVertex - (m + 1);
+                        indicesLines[iLines++] = iVertex;
+                    }
+                }
+
+                // Set index.
+                // Two Triangles.
+                if (j > 0 && i > 0) {
+                    indicesTris[iTris++] = iVertex;
+                    indicesTris[iTris++] = iVertex - 1;
+                    indicesTris[iTris++] = iVertex - (m + 1);
+                    //
+                    indicesTris[iTris++] = iVertex - 1;
+                    indicesTris[iTris++] = iVertex - (m + 1) - 1;
+                    indicesTris[iTris++] = iVertex - (m + 1);
+                }
+            }
+        }
+    }
+
+
+    function maleCanvas(){
+        // Get the WebGL context.
+        var canvas = document.getElementById('canvas');
+        var gl = canvas.getContext('experimental-webgl');
+
+        // Pipeline setup.
+        gl.clearColor(.95, .95, .95, 1);
+
+        // Backface culling.
+        gl.frontFace(gl.CCW);
+        gl.enable(gl.CULL_FACE);
+        gl.cullFace(gl.BACK);
+
+        // Depth(Z)-Buffer.
+        gl.enable(gl.DEPTH_TEST);
+        gl.depthFunc(gl.LEQUAL);
+
+        // Polygon offset of rastered Fragments.
+        gl.enable(gl.POLYGON_OFFSET_FILL);
+        gl.polygonOffset(0.8, 0);
+
+        // Compile vertex shader.
+        var vsSource = '' +
+            'attribute vec3 pos;' +
+            'attribute vec4 col;' +
+            'varying vec4 color;' +
+            'void main(){' + 'color = col;' +
+            'gl_Position = vec4(pos * 0.5, 1.0);' +
+            '}';
+
+        var vs = gl.createShader(gl.VERTEX_SHADER);
+        gl.shaderSource(vs, vsSource);
+        gl.compileShader(vs);
+
+        // Compile fragment shader.
+        fsSouce = 'precision mediump float;' +
+            'varying vec4 color;' +
+            'void main() {' +
+            'gl_FragColor = color;' +
+            '}';
+        var fs = gl.createShader(gl.FRAGMENT_SHADER);
+        gl.shaderSource(fs, fsSouce);
+        gl.compileShader(fs);
+
+        // Link shader together into a program.
+        var prog = gl.createProgram();
+        gl.attachShader(prog, vs);
+        gl.attachShader(prog, fs);
+        gl.bindAttribLocation(prog, 0, "pos");
+        gl.linkProgram(prog);
+        gl.useProgram(prog);
+
+        // Fill the data arrays.
+        chooseObject();
+
+        // Setup position vertex buffer object.
+        var vboPos = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vboPos);
+        gl.bufferData(gl.ARRAY_BUFFER,
+            vertices, gl.STATIC_DRAW);
+        // Bind vertex buffer to attribute variable.
+        var posAttrib = gl.getAttribLocation(prog, 'pos');
+        gl.vertexAttribPointer(posAttrib, 3, gl.FLOAT,
+            false, 0, 0);
+        gl.enableVertexAttribArray(posAttrib);
+        // Setup constant color.
+        var colAttrib = gl.getAttribLocation(prog, 'col');
+
+
+        // Setup lines index buffer object.
+        var iboLines = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboLines);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,   indicesLines, gl.STATIC_DRAW);
+        iboLines.numberOfElements = indicesLines.length;
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+
+        // Setup tris index buffer object.
+        var iboTris = gl.createBuffer();
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboTris);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,indicesTris, gl.STATIC_DRAW);
+        iboTris.numberOfElements = indicesTris.length;
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+        // Clear framebuffer and render primitives.
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+        function switchColorOfTriangles(){
+            var e = document.getElementById("select-fill-color");
+            var strObject = e.options[e.selectedIndex].value;
+            if(strObject == 1){
+                // Setup rendering tris.
+                gl.vertexAttrib4f(colAttrib, 1, 1, 1, 0.7);
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboTris);
+                gl.drawElements(gl.TRIANGLES,iboTris.numberOfElements, gl.UNSIGNED_SHORT, 0);
+            }else if(strObject == 2){ // Setup rendering lines.
+//                 Setup rendering tris.
+                gl.vertexAttrib4f(colAttrib, 0.5, 0.4, 0.2, 0.7);
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboTris);
+                gl.drawElements(gl.TRIANGLES, iboTris.numberOfElements, gl.UNSIGNED_SHORT, 0);
+            }else if(strObject == 3){ // Setup rendering lines.
+                // Setup rendering tris.
+                gl.vertexAttrib4f(colAttrib, 0, 0, 0, 1);
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboTris);
+                gl.drawElements(gl.TRIANGLES,iboTris.numberOfElements, gl.UNSIGNED_SHORT, 0);
+            }else if(strObject == 4){ // Setup rendering lines.
+                // Setup rendering tris.
+                gl.vertexAttrib4f(colAttrib, 0.2, 0.1, 0.5, 0.7);
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboTris);
+                gl.drawElements(gl.TRIANGLES,iboTris.numberOfElements, gl.UNSIGNED_SHORT, 0);
+            }
+        }
+
+        switchColorOfTriangles();
+
+        function switchColorOfLines(){
+            var e = document.getElementById("select-line-color");
+            var strObject = e.options[e.selectedIndex].value;
+
+            if(strObject == 1){
+                // Setup rendering lines.
+                gl.vertexAttrib4f(colAttrib, 0, 0, 0, 1);
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboLines);
+                gl.drawElements(gl.LINES,iboLines.numberOfElements, gl.UNSIGNED_SHORT, 0);
+            }else if(strObject == 2){ // Setup rendering lines.
+                gl.vertexAttrib4f(colAttrib, 0, 0.1, 0.8, 1);
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboLines);
+                gl.drawElements(gl.LINES,iboLines.numberOfElements, gl.UNSIGNED_SHORT, 0);
+            }else if(strObject == 3){ // Setup rendering lines.
+                gl.vertexAttrib4f(colAttrib, 1, 0.1, 0.2, 1);
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iboLines);
+                gl.drawElements(gl.LINES,iboLines.numberOfElements, gl.UNSIGNED_SHORT, 0);
+            }
+        }
+        switchColorOfLines();
+
+
+    }
+</script>
+<footer> Bei Fragen eine Mail an: <a href="mailto:bine.eichstaedt@gmx.net?Subject=Fragen%20Abgabe" target="_top">bine.eichstaedt@gmx.net</a> </footer>
+</body>
+</html>
