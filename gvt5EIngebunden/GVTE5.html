@@ -1,0 +1,54 @@
+<!DOCTYPE html5>
+<html>
+	<head>
+		<script src="ext/gl-matrix.js"></script>
+        <script src="GVT_vertexData_torus.js"></script>
+		<script src="GVT_vertexData_ball.js"></script>
+		<script src="GVT_vertexData_plane.js"></script>
+        <script src="GVTE5-JS.js"></script>
+		<script type="x-shader/x-vertex" id="vertexshader">
+			attribute vec3 aPosition;
+			attribute vec3 aNormal;
+
+			uniform mat4 uPMatrix;
+			uniform mat4 uMVMatrix;
+
+			varying vec4 vColor;
+
+			void main(){
+				gl_Position = uPMatrix * uMVMatrix * vec4(aPosition, 1.0);
+	
+				vColor = vec4(aNormal.x, aNormal.y, aNormal.z, 1.0);
+				vColor = (vColor + 1.0) / 2.0;
+			}
+		</script>
+		<script type="x-shader/x-fragment" id="fragmentshader">
+			precision mediump float;
+			varying vec4 vColor;
+
+			void main() {
+				gl_FragColor = vColor;
+			}
+		</script>
+		<title>Aufgabe5-Selzer</title>
+	</head>
+	<body onload="app.start()">
+	<header>
+		<h2>Abgabe der Aufgabe 5 : EA 5 - Kamerabewegung</h2>
+	</header>
+        <content>
+            <div style="display:inline; float:left;">
+                <canvas id="canvas" width="500" height="500"></canvas>
+            </div>
+            <div style="display:inline; float:left;">
+                <p> <span style="font-weight:bold;"> Tastenbelegung:</span></p>
+                <p> Die Steuereung erfolgt mit den Pfeiltasten, weitere belegte Tasten sind:.</p>
+                <p>"+" - rein zoomen</p>
+                <p>"-" - heraus zoomen</p>
+
+            </div>
+        </content>
+    <p> Sabine Selzer, November, 2018</p>
+	<footer> Bei Fragen eine Mail an: <a href="mailto:bine.eichstaedt@gmx.net?Subject=Fragen%20Abgabe" target="_top">bine.eichstaedt@gmx.net</a> </footer>
+	</body>
+</html>
