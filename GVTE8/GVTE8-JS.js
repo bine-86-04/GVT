@@ -46,11 +46,11 @@ var app = (function() {
         ambientLight : [ .5, .5, .5 ],
         light : [ {
             isOn : true,
-            position : [ 10., 1, 10 ],
+            position : [ 3., 1., 3. ],
             color : [ 1., 1., 1. ]
         }, {
             isOn : true,
-            position : [ -10., 1, -10 ],
+            position : [ -3., 1., -3. ],
             color : [ 1., 1., 1. ]
             },
         ]
@@ -164,10 +164,6 @@ var app = (function() {
             l.isOn = gl.getUniformLocation(prog, lightNb + ".isOn");
             l.position = gl.getUniformLocation(prog, lightNb + ".position");
 
-            			    console.log(" licht 1 " + l.position[0]);
-            			      console.log(" licht 1 y " + l.position[1]);
-            			         console.log(" licht 1 z " + l.position[2]);
-
             l.color = gl.getUniformLocation(prog, lightNb + ".color");
             prog.lightUniform[j] = l;
         }
@@ -209,13 +205,15 @@ var app = (function() {
 
         createModel("torus", fs, [ 1, 1, 1, 1 ], [ 0, .5, 0 ],
                 [ 0, 0, 0, 0 ], [ 0.5,  0.5,  0.5,  0.5], mRed);
-        createModel("sphere", fs, [ 1, 1, 1, 1 ], [ -.5, .5, 0 ], [ 0, 0,
+        createModel("sphere", fs, [ 1, 1, 1, 1 ], [ -.8, .5, 0 ], [ 0, 0,
                 0, 0 ], [ .2, .2,  0.2 ], mGreen);
-        createModel("sphere", fs, [ 1, 1, 1, 1 ], [ .5, .5, 0 ], [ 0, 0,
-                0, 0 ], [ .5, .5, .5 ], mBlue);
+        createModel("sphere", fs, [ 1, 1, 1, 1 ], [ .8, .5, 0 ], [ 0, 0,
+                0, 0 ], [ .3, .3, .3 ], mBlue);
         createModel("plane", fs, [ 1, 1, 1, 1 ], [ 0, 0, 0, 0 ], [ 0, 0, 0,
                 0 ], [ 1, 1, 1, 1 ], mWhite);
 
+        createModel("sphereNorm", fs, [ 1, 1, 1, 1 ], [ -1.25, .5, 0.5], [ 0, 0,
+                        0, 0 ], [ .2, .2, .2 ], mRed);
         // Select one model that can be manipulated interactively by user.
         interactiveModel = models[0];
     }
@@ -330,7 +328,6 @@ var app = (function() {
 
             switch(c){
             case ('L'):
-
            		setAngle += deltaRotate / 2;
             	setLightAngle();
                 break;
@@ -422,6 +419,7 @@ var app = (function() {
 
         // Loop over models.
         for (var i = 0; i < models.length; i++) {
+        console.log("models " + models.length);
             // Update modelview for model.
             updateTransformations(models[i]);
 
