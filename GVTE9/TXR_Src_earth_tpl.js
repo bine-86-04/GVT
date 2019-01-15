@@ -240,7 +240,7 @@ var app = ( function() {
 		var mGrey = createPhongMaterial({ka:[1.,1.,1.], kd:[.5,.5,.5], ks:[0.,0.,0.]});
 		var mWhite = createPhongMaterial({ka:[0.8,0.8,0.8], kd:[1,1,1], ks:[0,0,0]});
 	
-		createModel("sphere", fs, [1,1,1,1], [0,0,0], [-Math.PI/2.0,0,Math.PI/2.0], [2,2,2], mWhite,"textures/earth.png");
+		createModel("sphere", fs, [1,1,1,1], [0,0,0], [-Math.PI/2.0,0,Math.PI/2.0], [2,2,2], mWhite,"textures/Earth.png");
 	
 		// Select one model that can be manipulated interactively by user.
 		interactiveModel = models[0];
