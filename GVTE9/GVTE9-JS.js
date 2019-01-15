@@ -252,14 +252,12 @@ var app = (function() {
             ks : [ 0, 0, 0 ]});
 
 
-        createModel("torus", fs, [ 1, 1, 1, 1 ], [ 0, .5, 0 ],
-                [ 0, 0, 0, 0 ], [ 0.5,  0.5,  0.5,  0.5], mRed, "textures/TorusTExtureStripes.png");
+        createModel("torus", fs, [ 1, 1, 1, 1 ], [ 0, 0.8, 0 ],
+                [  -1.05, -0.18, -6.12, 0 ], [ 1.2, 1.2, 1.2,  1], mRed, "textures/donut.png");
 
-     //   createModel("sphere", fs, [ 1, 1, 1, 1 ], [ 0, 0, 0 ], [ 0, 0, 0 ],
-    //            [ 2, 2, 2 ], mGrey, "textures/torustexture.png");
 
         createModel("plane", fs, [ 1, 1, 1, 1 ], [ 0, 0, 0, 0 ], [ 0, 0, 0,
-                0 ], [ 1, 1, 1, 1 ], mGrey, "textures/x.png");
+                0 ], [ 1, 1, 1, 1 ], mGrey, "textures/a.jpg");
 
 
         // Select one model that can be manipulated interactively by user.
@@ -378,20 +376,25 @@ var app = (function() {
             switch (c) {
             case ('X'):
                 interactiveModel.rotate[0] += sign * deltaRotate;
+                console.log("rotate: " +interactiveModel.rotate[0] +" " + interactiveModel.rotate[1] + " " + interactiveModel.rotate[2]);
                 break;
             case ('Y'):
                 interactiveModel.rotate[1] += sign * deltaRotate;
+                console.log("rotate: " +interactiveModel.rotate[0] +" " + interactiveModel.rotate[1] + " " + interactiveModel.rotate[2]);
                 break;
             case ('Z'):
                 interactiveModel.rotate[2] += sign * deltaRotate;
+                console.log("rotate: " +interactiveModel.rotate[0] +" " + interactiveModel.rotate[1] + " " + interactiveModel.rotate[2]);
                 break;
             }
             // Scale/squeese interactiveModel.
             switch (c) {
             case ('S'):
                 interactiveModel.scale[0] *= 1 + sign * deltaScale;
-                interactiveModel.scale[1] *= 1 - sign * deltaScale;
+                interactiveModel.scale[1] *= 1 + sign * deltaScale;
                 interactiveModel.scale[2] *= 1 + sign * deltaScale;
+
+                console.log("scale: " +interactiveModel.scale[0] +" " + interactiveModel.scale[1] + " " + interactiveModel.scale[2]);
                 break;
             }
             // Change projection of scene.
@@ -567,8 +570,7 @@ var app = (function() {
     function draw(model) {
         // Setup position VBO.
         gl.bindBuffer(gl.ARRAY_BUFFER, model.vboPos);
-        gl
-                .vertexAttribPointer(prog.positionAttrib, 3, gl.FLOAT,
+        gl.vertexAttribPointer(prog.positionAttrib, 3, gl.FLOAT,
                         false, 0, 0);
 
         // Setup normal VBO.

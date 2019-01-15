@@ -1,8 +1,8 @@
 var torus = ( function() {
 
 	function createVertexData() {
-		var n = 16;
-		var m = 32;
+		var n = 10;
+		var m = 20;
 
 		// Positions.
 		this.vertices = new Float32Array(3 * (n + 1) * (m + 1));
@@ -35,6 +35,7 @@ var torus = ( function() {
 
 				var iVertex = i * (m + 1) + j;
 
+                // console.log("torus ivertex: " + iVertex + " u: " + u + " v: " + v);
 				var x = (R + r * Math.cos(u) ) * Math.cos(v);
 				var y = (R + r * Math.cos(u) ) * Math.sin(v);
 				var z = r * Math.sin(u);
@@ -45,8 +46,8 @@ var torus = ( function() {
 				vertices[iVertex * 3 + 2] = z;
 
 			    // Set texture coordinate.
-                textureCoord[iVertex * 2] = (u)/(2*Math.PI); // s
-                textureCoord[iVertex * 2 + 1] = (v)/(2*Math.PI); // t
+                textureCoord[iVertex * 2] = (v)/(2*Math.PI); // t
+                textureCoord[iVertex * 2 + 1] = (u)/(2*Math.PI); // s
 
 
 				// Calc and set normals.

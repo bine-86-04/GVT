@@ -2,8 +2,8 @@
 var plane = ( function() {
 
 	function createVertexData() {
-		var n = 100;
-		var m = 100;
+		var n = 10;
+		var m = 10;
 
 		// Positions.
 		this.vertices = new Float32Array(3 * (n + 1) * (m + 1));
@@ -21,6 +21,8 @@ var plane = ( function() {
 		this.indicesTris = new Uint16Array(3 * 2 * n * m);
 		var indicesTris = this.indicesTris;
 
+
+
 		var du = 20 / n;
 		var dv = 20 / m;
 		// Counter for entries in index array.
@@ -33,7 +35,7 @@ var plane = ( function() {
 			for(var j = 0, v = -10; j <= m; j++, v += dv) {
 
 				var iVertex = i * (m + 1) + j;
-
+		// console.log("ivertex: " + iVertex + " u: " + u + " v: " + v);
 				var x = u;
 				var y = 0;
 				var z = v;
