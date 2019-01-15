@@ -375,15 +375,15 @@ var app = (function() {
             // Rotate interactiveModel.
             switch (c) {
             case ('X'):
-                interactiveModel.rotate[0] += sign * deltaRotate;
+                interactiveModel.rotate[0] -= sign * deltaRotate;
                 console.log("rotate: " +interactiveModel.rotate[0] +" " + interactiveModel.rotate[1] + " " + interactiveModel.rotate[2]);
                 break;
             case ('Y'):
-                interactiveModel.rotate[1] += sign * deltaRotate;
+                interactiveModel.rotate[1] -= sign * deltaRotate;
                 console.log("rotate: " +interactiveModel.rotate[0] +" " + interactiveModel.rotate[1] + " " + interactiveModel.rotate[2]);
                 break;
             case ('Z'):
-                interactiveModel.rotate[2] += sign * deltaRotate;
+                interactiveModel.rotate[2] -= sign * deltaRotate;
                 console.log("rotate: " +interactiveModel.rotate[0] +" " + interactiveModel.rotate[1] + " " + interactiveModel.rotate[2]);
                 break;
             }
