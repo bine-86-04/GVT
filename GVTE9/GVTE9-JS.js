@@ -255,6 +255,8 @@ var app = (function() {
         createModel("torus", fs, [ 1, 1, 1, 1 ], [ 0, 0.8, 0 ],
                 [  -1.05, -0.18, -6.12, 0 ], [ 1.2, 1.2, 1.2,  1], mRed, "textures/donut.png");
 
+       // createModel("sphere", fs, [ 1, 1, 1, 1 ], [ -1.0, 0.5, 4.0 ], [ 0, 0, 0 ],
+       //         [ 0.5, 0.5, 0.5 ], mGrey, "textures/Earth.png");
 
         createModel("plane", fs, [ 1, 1, 1, 1 ], [ 0, 0, 0, 0 ], [ 0, 0, 0,
                 0 ], [ 1, 1, 1, 1 ], mGrey, "textures/a.jpg");
